@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Etch a sketch problem.</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Draw anything with your mouse!</h1> 
+
+    <div class="container">
+    </div>
+
+    <div id="controls">
+        Change Grid Size:<br>
+        <input type="text" id="grid_size">
+        <button id="clear_button">Clear and Resize Grid</button>
+    </div>
+
+
+<script>
+    function makeDivs(n, m){
+        // makes a n x m grid of divs, adds event listener to each
+        // to be colored in when the mouse passes over.
+
+        var big_container = document.querySelector("div.container");
+        big_container.style["grid-template-columns"] = `repeat(${m}, auto)`;
+        big_container.style["grid-template-rows"] = `repeat(${n}, auto)`;
+
+        for (var i=0; i < n*m; i++){
+            var new_container = document.createElement("div");
+            new_container.className = "grid-item";
+            new_container.style["background-color"] = "white";
+                
+            new_container.addEventListener("mouseover", function(event){
+                event.target.style["background-color"] = "black";
+            });
+
+            big_container.appendChild(new_container);
+        }
+    }
+
+    function changeGridButton(){
+        // called when the clear grid button is clicked.
+
+        // delete the current grid.
+        var big_container = document.querySelector("div.container");
+        big_container.innerHTML = "";
+
+        var new_grid_size = document.getElementById("grid_size").value;
+        makeDivs(new_grid_size, new_grid_size);
+    }
+
+    // Executes when page is loaded:
+    // when page is loaded, begin with a 64x64 grid for drawing.
+    makeDivs(64,64);
+
+    // load the submit button with its on click function.
+    var submit_button = document.getElementById("clear_button");
+    submit_button.onclick = changeGridButton;
+
+</script>
+
+</body>
+
+</html>
